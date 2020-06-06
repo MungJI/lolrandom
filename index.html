@@ -10,8 +10,8 @@
 </script>
 <script>
 	first();
-function random(min, max) {
-      return Math.floor(Math.random() * (max - min)) + min;
+function ranNum( max ) {
+      return Math.floor(Math.random() * max);
     }
 	
 function first() {
@@ -22,7 +22,7 @@ function first() {
 		var time = res.fileTime;
 		var version = res.version;
 		var listSize = heroLists.length;
-		var randomNum = random(1,listSize);
+		var randomNum = ranNum(listSize);
 		var alias = heroLists[randomNum].alias;
 		var title = heroLists[randomNum].title;
 		var name = heroLists[randomNum].name;
@@ -48,7 +48,7 @@ function randomHero() {
 	$.getJSON('https://game.gtimg.cn/images/lol/act/img/js/heroList/hero_list.js',function (res) {
 		heroLists = res.hero;
 		var listSize = heroLists.length;
-		var randomNum = random(1,listSize);
+		var randomNum = ranNum(listSize);
 		var alias = heroLists[randomNum].alias;
 		var title = heroLists[randomNum].title;
 		var name = heroLists[randomNum].name;
@@ -66,13 +66,17 @@ function randomHero() {
 
 <style type="text/css">
 body {
-      background-color:#D0D0D0;
+      //background-color:#D0D0D0;
       font-family:"微软雅黑","黑体","宋体";
-     
+      background-color: red; /* 浏览器不支持时显示 */
+    background-image: linear-gradient(-90deg, #a1c4fd 0%, #276ace 100%);
       }
+
+
+
 </style>
 </head>
-<body>
+<body id="grad1">
 <div class="container-fluid">
 <div class="row"  style="width：100%">
 

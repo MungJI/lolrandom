@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>随机英雄(自动更新-官网同步版) By WhereYous</title> 
+<link href="./css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+</script>
+<script>
+	first();
+function random(min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
+    }
+	
+function first() {
+	var heroLists = null;
+	var listSize;
+	$.getJSON('https://game.gtimg.cn/images/lol/act/img/js/heroList/hero_list.js',function (res) {
+		heroLists = res.hero;
+		var listSize = heroLists.length;
+		var randomNum = random(1,listSize);
+		var alias = heroLists[randomNum].alias;
+		var title = heroLists[randomNum].title;
+		var name = heroLists[randomNum].name;
+		var html = "";
+		html = 	'<div align="center" style="margin-top:150px;"><img id="img" src="https://game.gtimg.cn/images/lol/act/img/champion/'+alias+'.png"></div>\
+			<div align="center"><h1 id="title">'+title+'</h1></div>\
+			<div align="center"><h1  id="name">'+name+'</h1></div>\
+			<div align="center"><h1  id="alias">'+alias+'</h1></div>\
+			<div align="center"><h1 ><button onclick="randomHero()" type="button" class="btn btn-success">点击重随</button></h1></div>';
+		//alert(html);
+		$("#content").html(html);
+	});
+	
+    }
+
+function randomHero() {
+	var heroLists = null;
+	var listSize;
+	$.getJSON('https://game.gtimg.cn/images/lol/act/img/js/heroList/hero_list.js',function (res) {
+		heroLists = res.hero;
+		var listSize = heroLists.length;
+		var randomNum = random(1,listSize);
+		var alias = heroLists[randomNum].alias;
+		var title = heroLists[randomNum].title;
+		var name = heroLists[randomNum].name;
+		//alert(alias);
+		$("#title").text(title);
+		$("#name").text(name);
+		$("#alias").text(alias);
+		$("#img").attr("src", "https://game.gtimg.cn/images/lol/act/img/champion/"+alias+".png");
+	});
+	
+    }
+
+	
+</script>
+
+<style type="text/css">
+body {
+       margin:0px;
+      padding:0px;
+      background-color:#E7EAEB;
+      font-family:"微软雅黑","黑体","宋体";
+      font-size:22px;
+      height:36px;
+      }
+</style>
+</head>
+<body>
+<div id ="content"  align="center"></div>
+</body>
+</html>

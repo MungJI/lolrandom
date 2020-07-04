@@ -26,6 +26,7 @@ function first() {
 		var alias = heroLists[randomNum].alias;
 		var title = heroLists[randomNum].title;
 		var name = heroLists[randomNum].name;
+		var vaudio =  heroLists[randomNum].selectAudio+"";
 		var html = "";
 		html = 	'<div align="center" style="margin-top:150px;"><img id="img" src="https://game.gtimg.cn/images/lol/act/img/champion/'+alias+'.png"></div>\
 			<div align="center" style="margin-top:10px;"><h1 id="title">'+title+'</h1></div>\
@@ -33,11 +34,15 @@ function first() {
 			<div align="center"><h1  id="alias">'+alias+'</h1></div>\
 			<div align="center" style="margin-top:50px;"><h1 ><button onclick="randomHero()" type="button" class="btn btn-success">发射核弹</button></h1></div>';
 		//alert(html);
-		
+		var audiohtml = "";
+		audiohtml  ='<audio  hidden="hidden" autoplay="autoplay">\
+  			<source src="'+vaudio+'"   id="vaudio"/>\
+			</audio>';
 		$("#heroAllnum").text(listSize);
 		$("#version").text(version);
 		$("#time").text(time);
 		$("#content").html(html);
+		$("#audiohtml").html(audiohtml);
 	});
 	
     }
@@ -52,11 +57,17 @@ function randomHero() {
 		var alias = heroLists[randomNum].alias;
 		var title = heroLists[randomNum].title;
 		var name = heroLists[randomNum].name;
-		//alert(alias);
+		var vaudio =  heroLists[randomNum].selectAudio+"";
+		//alert(vaudio);
 		$("#title").text(title);
 		$("#name").text(name);
 		$("#alias").text(alias);
 		$("#img").attr("src", "https://game.gtimg.cn/images/lol/act/img/champion/"+alias+".png");
+		var audiohtml = "";
+		audiohtml  ='<audio  hidden="hidden" autoplay="autoplay">\
+  			<source src="'+vaudio+'"   id="vaudio"/>\
+			</audio>';
+		$("#audiohtml").html(audiohtml);
 	});
 	
     }
@@ -66,8 +77,8 @@ function randomHero() {
 
 <style type="text/css">
 body {
-     	font-family:"微软雅黑","黑体","宋体";
-    	background-image: linear-gradient(-90deg, #a1c4fd 0%, #276ace 100%);
+      font-family:"微软雅黑","黑体","宋体";
+    background-image: linear-gradient(-90deg, #a1c4fd 0%, #276ace 100%);
       }
 
 
@@ -79,16 +90,22 @@ body {
 <div class="row"  style="width：100%">
 
       <div class="col-lg-4  col-sm-4 col-md-4 nav flex-column justify-content-center  text-center"  align="center" style="margin-top:150px;">
-         <h3>当前英雄总数：<span id="heroAllnum"></span></h3>
+         <h3>当前英雄总数：<span id="heroAllnum"></span></h3></br>
+         <h3>当前版本：<span id="version"></span></h3></br>
+	<h3>更新时间：<span id="time"></span></h3>
       </div>
 <div class="col-lg-4  col-sm-4 col-md-4 nav flex-column justify-content-center  text-center " >
 <div><div id ="content"  align="center"></div></div>
 </div>
 
 <div class="col-lg-4 col-sm-4 col-md-4 nav flex-column justify-content-center  text-center"  align="center" style="margin-top:150px;" >
-<h3>当前版本：<span id="version"></span></h3>
-<h3>更新时间：<span id="time"></span></h3>
+<h3>开发日志</h3></br></br>
+<h4>2020-07-04：添加音频</h4>
 </div>
+
+<div id="audiohtml">
+</div>
+
 
 
 </div>

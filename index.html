@@ -1,146 +1,155 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8"> 
-<title>随机英雄(自动更新-官网同步版) By WhereYous</title> 
-<link href="./css/bootstrap.min.css" rel="stylesheet">
-<link rel="shortcut icon" href="https://yz.lol.qq.com/icons/favicon.ico">
+    <meta charset="utf-8">
+    <title>随机英雄(自动更新-官网同步版) By WhereYous</title>
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="https://yz.lol.qq.com/icons/favicon.ico">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 
-<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <script>
+        //是否初始化
+        var isInit = false;
+        // 全部英雄列表
+        var heroLists;
+        // 更新时间
+        var time;
+        // 版本号
+        var version;
+        // 英雄数量
+        var listSize;
 
 
-<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
-</script>
-<script>
-	first();
-function ranNum( max ) {
-      return Math.floor(Math.random() * max);
-    }
-	
-function first() {
-	var heroLists = null;
-	var listSize;
-	$.getJSON('https://game.gtimg.cn/images/lol/act/img/js/heroList/hero_list.js',function (res) {
-		heroLists = res.hero;
-		var time = res.fileTime;
-		var version = res.version;
-		var listSize = heroLists.length;
-		var randomNum = ranNum(listSize);
-		var alias = heroLists[randomNum].alias;
-		var title = heroLists[randomNum].title;
-		var name = heroLists[randomNum].name;
-		var vaudio =  heroLists[randomNum].selectAudio+"";
-		var html = "";
-		html = 	'<div align="center" style="margin-top:150px;"><img id="img" src="https://game.gtimg.cn/images/lol/act/img/champion/'+alias+'.png"></div>\
-			<div align="center" style="margin-top:10px;"><h1 id="title">'+title+'</h1></div>\
-			<div align="center"><h1  id="name">'+name+'</h1></div>\
-			<div align="center"><h1  id="alias">'+alias+'</h1></div>\
-			<div align="center" style="margin-top:50px;"><h1 ><button onclick="randomHero()" type="button" class="btn btn-success">发射核弹</button></h1></div>';
-		//alert(html);
-		var audiohtml = "";
-		audiohtml  ='<audio  hidden="hidden" autoplay="autoplay" id="audio">\
-  			<source src="'+vaudio+'"   id="vaudio"/>\
+        //第一次进入
+        // 还未初始化，请求接口
+        if (!isInit) {
+            $.getJSON('https://game.gtimg.cn/images/lol/act/img/js/heroList/hero_list.js', function (res) {
+                heroLists = res.hero;
+                time = res.fileTime;
+                version = res.version;
+                listSize = heroLists.length;
+                randomHero();
+                // 修改初始化标识
+                isInit = true;
+
+            });
+        }
+
+
+        function randomHero() {
+
+            var randomNum = ranNum(listSize);
+            var alias = heroLists[randomNum].alias;
+            var title = heroLists[randomNum].title;
+            var name = heroLists[randomNum].name;
+            var vaudio = heroLists[randomNum].selectAudio + "";
+            //alert(vaudio);
+
+            //alert(toggleFlag);
+
+
+            if (!isInit) {
+                $("#heroAllnum").text(listSize);
+                $("#version").text(version);
+                $("#time").text(time);
+            }
+
+            $("#title").text(title);
+            $("#name").text(name);
+            $("#alias").text(alias);
+            $("#img").attr("src", "https://game.gtimg.cn/images/lol/act/img/champion/" + alias + ".png");
+            var toggleFlag = $("#toggleFlag").attr("class");
+
+            if (toggleFlag == "fa fa-toggle-on") {
+                var audioHtml = '<audio  hidden="hidden" autoplay="autoplay"  id="audio">\
+  			<source src="' + vaudio + '"   id="vaudio"/>\
 			</audio>';
-		$("#heroAllnum").text(listSize);
-		$("#version").text(version);
-		$("#time").text(time);
-		$("#content").html(html);
-		$("#audiohtml").html(audiohtml);
-		//开始调节音量0.1
-		var x = document.getElementById("audio");
-		x.volume = 0.1;
-	});
-	
-    }
 
-function randomHero() {
-	var heroLists = null;
-	var listSize;
-	$.getJSON('https://game.gtimg.cn/images/lol/act/img/js/heroList/hero_list.js',function (res) {
-		heroLists = res.hero;
-		var listSize = heroLists.length;
-		var randomNum = ranNum(listSize);
-		var alias = heroLists[randomNum].alias;
-		var title = heroLists[randomNum].title;
-		var name = heroLists[randomNum].name;
-		var vaudio =  heroLists[randomNum].selectAudio+"";
-		//alert(vaudio);
-		$("#title").text(title);
-		$("#name").text(name);
-		$("#alias").text(alias);
-		$("#img").attr("src", "https://game.gtimg.cn/images/lol/act/img/champion/"+alias+".png");
-		var toggleFlag = $("#toggleFlag").attr("class");
-		//alert(toggleFlag);
-		if(toggleFlag=="fa fa-toggle-on"){
-		var audiohtml = "";
-		audiohtml  ='<audio  hidden="hidden" autoplay="autoplay"  id="audio">\
-  			<source src="'+vaudio+'"   id="vaudio"/>\
-			</audio>';
-		$("#audiohtml").html(audiohtml);
-		//开始调节音量0.1
-		var x = document.getElementById("audio");
-		x.volume = 0.1;
-		}
-	});
+                $("#audioHtml").html(audioHtml);
+                //开始调节音量0.1
+                var x = document.getElementById("audio");
+                x.volume = 0.3;
+            }
 
-	}
+        }
+
+        function ranNum(max) {
+            return Math.floor(Math.random() * max);
+        }
+
+        function toggleOn() {
+            var html = '<i class="fa fa-toggle-on"  onclick="toggleOff()" id="toggleFlag"></i>';
+            //alert(html);
+            $("#toggle").html(html);
+
+        }
+
+        function toggleOff() {
+            var html = '<i class="fa fa-toggle-off"  onclick="toggleOn()" id="toggleFlag"></i>';
+            //alert(html);
+            $("#toggle").html(html);
+
+        }
 
 
-function toggleOn() {
-	var html = '<i class="fa fa-toggle-on"  onclick="toggleOff()" id="toggleFlag"></i>';
-	//alert(html);
-	$("#toggle").html(html);
-	
-    }
+    </script>
 
-function toggleOff() {
-	var html = '<i class="fa fa-toggle-off"  onclick="toggleOn()" id="toggleFlag"></i>';
-	//alert(html);
-	$("#toggle").html(html);
-	
-    }
-
-	
-</script>
-
-<style type="text/css">
-body {
-      font-family:"微软雅黑","黑体","宋体";
-    background-image: linear-gradient(-90deg, #a1c4fd 0%, #276ace 100%);
-      }
+    <style type="text/css">
+        body {
+            font-family: "微软雅黑", "黑体", "宋体";
+            background-image: linear-gradient(-90deg, #a1c4fd 0%, #276ace 100%);
+        }
 
 
-
-</style>
+    </style>
 </head>
 <body id="grad1">
 <div class="container-fluid">
-<div class="row"  style="width：100%">
+    <div class="row" style="width:100%">
 
-      <div class="col-lg-4  col-sm-4 col-md-4 nav flex-column justify-content-center  text-center"  align="center" style="margin-top:150px;">
-	<h3>是否播放人物音乐：<span id="toggle"><i class="fa fa-toggle-on" onclick="toggleOff()"  id="toggleFlag"></i></span></h3></br>
-         	<h3>当前英雄总数：<span id="heroAllnum"></span></h3></br>
-         	<h3>当前版本：<span id="version"></span></h3></br>
-	<h3>自动更新时间：<span id="time"></span></h3>
-	
-	
-      </div>
-<div class="col-lg-4  col-sm-4 col-md-4 nav flex-column justify-content-center  text-center " >
-<div><div id ="content"  align="center"></div></div>
-</div>
-
-<div class="col-lg-4 col-sm-4 col-md-4 nav flex-column justify-content-center  text-center"  align="center" style="margin-top:150px;" >
-
-<h3>开发日志</h3></br></br>
-<h4>2020-07-04：添加音频</h4>
-</div>
-
-<div id="audiohtml">
-</div>
+        <div class="col-lg-4  col-sm-4 col-md-4 nav flex-column justify-content-center  text-center" align="center"
+             style="margin-top:150px;">
+            <h3>是否播放人物音乐：<span id="toggle"><i class="fa fa-toggle-on" onclick="toggleOff()" id="toggleFlag"></i></span>
+            </h3></br>
+            <h3>当前英雄总数：<span id="heroAllnum"></span></h3></br>
+            <h3>当前版本：<span id="version"></span></h3></br>
+            <h3>自动更新时间：<span id="time"></span></h3>
 
 
+        </div>
+        <div class="col-lg-4  col-sm-4 col-md-4 nav flex-column justify-content-center  text-center ">
+            <div>
+                <div id="content" align="center">
+                    <div align="center" style="margin-top:150px;">
+                        <img id="img">
+                    </div>
+                    <div align="center" style="margin-top:10px;"><h1 id="title">' + title + '</h1></div>
+                    <div align="center"><h1 id="name"></h1></div>
+                    <div align="center"><h1 id="alias"></h1></div>
+                    <div align="center" style="margin-top:50px;">
+                        <h1>
+                            <button onclick="randomHero()" type="button" class="btn btn-success">发射核弹</button>
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-</div>
+        <div class="col-lg-4 col-sm-4 col-md-4 nav flex-column justify-content-center  text-center" align="center"
+             style="margin-top:150px;">
+
+            <h3>开发日志</h3></br></br>
+            <h4>2020-07-04：添加音频</h4>
+            <h4>|</h4>
+            <h4>2024-4-10：优化代码</h4>
+        </div>
+
+        <div id="audioHtml">
+        </div>
+
+
+    </div>
 </div>
 </body>
 </html>
